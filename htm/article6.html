@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" href="../css/pmag.css" type="text/css" />
+</head>
+<body>
+<div id="header_wrap">
+   <h1><a href="https://www.facebook.com/groups/programmerMagazine">程式人雜誌</a> <sub> --  <a href="https://dl.dropbox.com/u/101584453/pmag/201312/htm/home.html">2014 年 1 月號</a> (開放公益出版品)</sub></h1>
+</div>
+<div id="content">
+<div id="TOC">
+<ul>
+<li><a href="#visual-basic-6.0-將明文處理轉換為密文-摩斯密碼-morse-code-作者廖憲得-0xde">[Visual Basic 6.0] 將明文處理轉換為密文 摩斯密碼 (Morse Code) (作者：廖憲得 0xde)</a></li>
+</ul>
+</div>
+<h2 id="visual-basic-6.0-將明文處理轉換為密文-摩斯密碼-morse-code-作者廖憲得-0xde"><a href="#visual-basic-6.0-將明文處理轉換為密文-摩斯密碼-morse-code-作者廖憲得-0xde">[Visual Basic 6.0] 將明文處理轉換為密文 摩斯密碼 (Morse Code) (作者：廖憲得 0xde)</a></h2>
+<h3 id="何謂-摩斯密碼-morse-code"><a href="#何謂-摩斯密碼-morse-code">何謂 摩斯密碼 (Morse Code) ?</a></h3>
+<p>摩斯電碼（英語：Morse Code）是一種時通時斷的訊號代碼，透過不同的排列順序來表達不同的英文字母、數字和標點符號。是由美國人薩繆爾·摩斯在1836年發明。</p>
+<p>摩斯電碼是一種早期的數位化通訊形式，但是它不同於現代只使用0和1兩種狀態的二進制代碼，它的代碼包括五種：</p>
+<ul>
+<li>點（.）</li>
+<li>劃（-）</li>
+<li>每個字元間短的停頓（在點和劃之間的停頓）</li>
+<li>每個詞之間中等的停頓</li>
+<li>以及句子之間長的停頓</li>
+</ul>
+<p>來源：<a href="http://zh.wikipedia.org/wiki/%E6%91%A9%E5%B0%94%E6%96%AF%E7%94%B5%E7%A0%81">維基百科-摩斯電碼</a></p>
+<div class="figure">
+<img src="../img/Morse1.JPG" />
+</div>
+<div class="figure">
+<img src="../img/Morse2.JPG" />
+</div>
+<pre><code>A    . – (di-dah)
+B    - . . . (dah-di-di-dit)
+C    - . – . (dah-di-dah-dit)
+D    - . . (dah-di-dit)
+E    . (dit)
+F    . . – . (di-di-dah-dit)
+G    - – . (dah-dah-dit)
+H    . . . . (di-di-di-dit)
+I    . . (di-dit)
+J    . – - – (di-dah-dah-dah)
+K    - . – (dah-di-dah)
+L    . – . . (di-dah-di-dit)
+M    - – (dah-dah)
+N    - . (dah-dit)
+O    - – - (dah-dah-dah)
+P    . – . (di-dah-dah-dit)
+Q    - – . – (dah-dah-di-dah)
+R    . – . (di-dah-dit)
+S    . . . (di-di-dit)
+T    - (dah)
+U    . . – (di-di-dah)
+V    . . . – (di-di-di-dah)
+W    . – - (di-dah-dah)
+X    - . . – (dah-di-di-dah)
+Y    - . – - (dah-di-dah-dah)
+Z    - – . . (dah-dah-di-dit)
+
+0    - – - – - (dah-dah-dah-dah-dah)
+1    . – - – - (di-dah-dah-dah-dah)
+2    . . – - – (di-di-dah-dah-dah)
+3    . . . – - (di-di-di-dah-dah)
+4    . . . . – (di-di-di-di-dah)
+5    . . . . . (di-di-di-di-dit)
+6    - . . . . (dah-di-di-di-dit)
+7    - – . . . (dah-dah-di-di-dit)
+8    - – - . . (dah-dah-dah-di-dit)
+9    - – - – . (dah-dah-dah-dah-dit)</code></pre>
+<p>我將以上的表建立為資料庫</p>
+<pre><code>MorseCode = &quot;A,.–,di-dah|B,-...,dah-di-di-dit|C,-.–.,dah-di-dah-dit|D,-..,dah-di-dit|E,.,dit|F,..–.,di-di-dah-dit|G,-–.,dah-dah-dit|H,....,di-di-di-dit|I,..,di-dit|J,.–-–,di-dah-dah-dah|K,-.–,dah-di-dah|L,.–..,di-dah-di-dit|M,-–,dah-dah|N,-.,dah-dit|O,-–-,dah-dah-dah|P,.–.,di-dah-dah-dit|Q,-–.–,dah-dah-di-dah|R,.–.,di-dah-dit|S,...,di-di-dit|T,-,dah|U,..–,di-di-dah|V,...–,di-di-di-dah|W,.–-,di-dah-dah|X,-..–,dah-di-di-dah|Y,-.–-,dah-di-dah-dah|Z,-–..,dah-dah-di-dit|0,-–-–-,dah-dah-dah-dah-dah|1,.–-–-,di-dah-dah-dah-dah|2,..–-–,di-di-dah-dah-dah|3,...–-,di-di-di-dah-dah|4,....–,di-di-di-di-dah|5,.....,di-di-di-di-dit|6,-....,dah-di-di-di-dit|7,-–...,dah-dah-di-di-dit|8,-–-..,dah-dah-dah-di-dit|9,-–-–.,dah-dah-dah-dah-dit&quot;</code></pre>
+<p>　</p>
+<pre class="sourceCode monobasic"><code class="sourceCode monobasic"><span class="kw">Dim</span> MorseCodeData(35, 2)
+<span class="co">&#39;------------------------------------------------</span>
+<span class="kw">Private</span> <span class="kw">Sub </span>Form_Load() <span class="co">&#39; 載入主程式 (建立資料庫)</span>
+    MorseCode = <span class="st">&quot;A,.–,di-dah|B,-...,dah-di-di-dit|C,-.–.,dah-di-dah-dit|D,-..,dah-di-dit|E,.,dit|F,..–.,di-di-dah-dit|G,-–.,dah-dah-dit|H,....,di-di-di-dit|I,..,di-dit|J,.–-–,di-dah-dah-dah|K,-.–,dah-di-dah|L,.–..,di-dah-di-dit|M,-–,dah-dah|N,-.,dah-dit|O,-–-,dah-dah-dah|P,.–.,di-dah-dah-dit|Q,-–.–,dah-dah-di-dah|R,.–.,di-dah-dit|S,...,di-di-dit|T,-,dah|U,..–,di-di-dah|V,...–,di-di-di-dah|W,.–-,di-dah-dah|X,-..–,dah-di-di-dah|Y,-.–-,dah-di-dah-dah|Z,-–..,dah-dah-di-dit|0,-–-–-,dah-dah-dah-dah-dah|1,.–-–-,di-dah-dah-dah-dah|2,..–-–,di-di-dah-dah-dah|3,...–-,di-di-di-dah-dah|4,....–,di-di-di-di-dah|5,.....,di-di-di-di-dit|6,-....,dah-di-di-di-dit|7,-–...,dah-dah-di-di-dit|8,-–-..,dah-dah-dah-di-dit|9,-–-–.,dah-dah-dah-dah-dit&quot;</span>
+    
+    MorseDataA = Split(MorseCode, <span class="st">&quot;|&quot;</span>)
+    
+    <span class="kw">For </span>i = 0 <span class="kw">To</span> UBound(MorseDataA)
+        MorseDataB = Split(MorseDataA(i), <span class="st">&quot;,&quot;</span>)
+        <span class="kw">For </span>J = 0 <span class="kw">To</span> UBound(MorseDataB)
+            MorseCodeData(i, J) = MorseDataB(J)
+        <span class="kw">Next </span>J
+    <span class="kw">Next </span>i
+<span class="kw">End Sub</span>
+<span class="co">&#39;------------------------------------------------</span>
+<span class="kw">Private</span> <span class="kw">Sub </span>Command1_Click()
+    Text2 = <span class="st">&quot;&quot;</span>
+    Text3 = <span class="st">&quot;&quot;</span>
+    <span class="kw">For </span>i = 1 <span class="kw">To</span> Len(Text1)
+        <span class="kw">If </span>Asc(Mid(Text1, i, 1)) &gt;= 97 <span class="kw">And</span> Asc(Mid(Text1, i, 1)) &lt;= 122 <span class="kw">Then</span>
+            Inp = Chr(Asc(Mid(Text1, i, 1)) - 32)
+        <span class="kw">Else</span>
+            Inp = Mid(Text1, i, 1)
+        <span class="kw">End If</span>
+            OutA = <span class="st">&quot;?&quot;</span>
+            OutB = <span class="st">&quot;?&quot;</span>
+        <span class="kw">For </span>J = 0 <span class="kw">To</span> 35
+            <span class="kw">If </span>Inp = MorseCodeData(J, 0) <span class="kw">Then</span> OutA = MorseCodeData(J, 1)
+            <span class="kw">If </span>Inp = MorseCodeData(J, 0) <span class="kw">Then</span> OutB = MorseCodeData(J, 2)
+        <span class="kw">Next </span>J
+        
+        Text2 = Text2 &amp; OutA &amp; <span class="st">&quot; &quot;</span>
+        Text3 = Text3 &amp; OutB &amp; <span class="st">&quot; &quot;</span>
+    <span class="kw">Next </span>i
+<span class="kw">End Sub</span>
+<span class="co">&#39;------------------------------------------------</span>
+<span class="kw">Private</span> <span class="kw">Sub </span>Command3_Click()
+End
+<span class="kw">End Sub</span>
+<span class="co">&#39;------------------------------------------------</span></code></pre>
+<ul>
+<li>原始碼下載： <a href="http://files.dotblogs.com.tw/0xde/1312/2013125223951837.rar">Visual Basic 6.0 摩斯密碼 (Morse Code).rar</a></li>
+</ul>
+<p>【本文作者為「廖憲得」，原文網址為： <a href="http://www.dotblogs.com.tw/0xde/archive/2013/12/05/132685.aspx">http://www.dotblogs.com.tw/0xde/archive/2013/12/05/132685.aspx</a> ，由陳鍾誠編輯後納入本雜誌】</p>
+</div>
+<div id="footer">
+<a href="https://www.facebook.com/groups/programmerMagazine/">程式人雜誌</a> ，採用 <a href="http://creativecommons.org/licenses/by-sa/3.0/tw/ ">創作共用：姓名標示、相同方式分享</a> 授權，歡迎加入 <a href="https://www.facebook.com/groups/programmerMagazine/">雜誌社團</a>
+</div>
+</body>
+</html>

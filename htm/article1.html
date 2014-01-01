@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" href="../css/pmag.css" type="text/css" />
+</head>
+<body>
+<div id="header_wrap">
+   <h1><a href="https://www.facebook.com/groups/programmerMagazine">程式人雜誌</a> <sub> --  <a href="https://dl.dropbox.com/u/101584453/pmag/201312/htm/home.html">2014 年 1 月號</a> (開放公益出版品)</sub></h1>
+</div>
+<div id="content">
+<div id="TOC">
+<ul>
+<li><a href="#arduino入門教學13-使用光敏電阻控制伺服馬達-作者cooper-maa">Arduino入門教學(13) – 使用光敏電阻控制伺服馬達 (作者：Cooper Maa)</a></li>
+</ul>
+</div>
+<h2 id="arduino入門教學13-使用光敏電阻控制伺服馬達-作者cooper-maa"><a href="#arduino入門教學13-使用光敏電阻控制伺服馬達-作者cooper-maa">Arduino入門教學(13) – 使用光敏電阻控制伺服馬達 (作者：Cooper Maa)</a></h2>
+<h3 id="實驗目的"><a href="#實驗目的">實驗目的</a></h3>
+<p>練習用光敏電阻控制伺服馬達(Servo motor)。以兩顆光敏電阻做一個簡單的光源追蹤系統，當發現左邊比較亮時，就控制伺服馬達旋轉到左邊，當發現右邊比較亮時，就控制伺服馬達旋轉到右邊。</p>
+<div class="figure">
+<img src="../img/arduinoServoMotor.png" />
+</div>
+<h3 id="讀者必備知識"><a href="#讀者必備知識">讀者必備知識</a></h3>
+<p>為了順利進行本項實驗，你必須先知道底下這些基礎知識:</p>
+<p>認識光敏電阻。相關資訊可參考「<a href="http://coopermaa2nd.blogspot.com/2010/12/arduino-lab8-led.html">Lab8 使用光敏電阻控制 LED 的開關</a>」一文。 知道如何控制伺服馬達。相關資訊可參考「Lab16 使用可變電阻控制伺服馬達」一文。 材料</p>
+<ul>
+<li>麵包板 x 1</li>
+<li>Arduino 主板 x 1</li>
+<li>光敏電阻(photocell) x 2</li>
+<li>伺服馬達(Servo Motor) x 1</li>
+<li>10k ohm 電阻 x 2</li>
+<li>單心線 x N</li>
+<li>接線</li>
+</ul>
+<p>伺服馬達有三條線，電源(紅線)、接地(黑線)，以及訊號線。</p>
+<div class="figure">
+<img src="../img/arduinoServoDiagram.png" />
+</div>
+<p>伺服馬達紅線接到 +5v，黑線接到 GND，訊號線接到 pin 9 左手邊的光敏電阻一支腳接到 5V，另一支腳串接一顆 10k 電阻接到 analog pin 0 右手邊的光敏電阻一支腳接到 5V，另一支腳串接一顆 10k 電阻接到 analog pin 1</p>
+<div class="figure">
+<img src="../img/arduinoServoBoard.png" />
+</div>
+<p>下圖是本實驗的接法，為了判斷哪一邊光線比較強，所以稍微折彎了兩顆光敏電阻，讓它一顆往左彎，另一顆往右彎：</p>
+<div class="figure">
+<img src="../img/arduinoServoBoard2.png" />
+</div>
+<h3 id="電路圖"><a href="#電路圖">電路圖</a></h3>
+<div class="figure">
+<img src="../img/arduinoServoCircuit.png" />
+</div>
+<h3 id="程式碼"><a href="#程式碼">程式碼</a></h3>
+<p>版本一(PhotocellServo.pde): 底下是這個簡單光源追蹤系統的程式碼，程式的邏輯是，當發現左邊比較亮時，就控制伺服馬達旋轉到左邊(旋轉到 0 度)，當發現右邊比較亮時，就控制伺服馬達旋轉到右邊(旋轉到 180 度)。程式同時把左右兩顆光敏電阻的讀值印到了 Serial port，到時就可以用 Serial Monitor 觀察光敏電阻數值的變化。</p>
+<pre class="sourceCode CPP"><code class="sourceCode cpp">
+<span class="co">// 使用光敏電阻控制 Servo</span>
+
+<span class="co">// 引用 Servo Library</span>
+<span class="ot">#include &lt;Servo.h&gt; </span>
+
+<span class="co">// 建立一個 Servo 物件 </span>
+Servo myservo; 
+ 
+<span class="co">// 兩顆光敏電阻接在 Analog pin 0 及 pin 1</span>
+<span class="dt">int</span> sensorLeft = <span class="dv">0</span>;
+<span class="dt">int</span> sensorRight = <span class="dv">1</span>;
+ 
+<span class="dt">void</span> setup() 
+{ 
+  Serial.begin(<span class="dv">9600</span>);
+  myservo.attach(<span class="dv">9</span>);  <span class="co">// Servo 接在 pin 9</span>
+} 
+ 
+<span class="dt">void</span> loop() 
+{
+  <span class="dt">int</span> readingLeft, readingRight;
+  
+  <span class="co">// 讀取左右兩顆光敏電阻的讀值</span>
+  readingLeft = analogRead(sensorLeft);
+  readingRight = analogRead(sensorRight);
+  
+  <span class="kw">if</span> (readingLeft &gt; readingRight) {
+    <span class="co">// 左邊光敏電阻較亮&amp;#65292;控制 Servo 轉到 0 度</span>
+    myservo.write(<span class="dv">0</span>);                    <span class="co">// 設定 Servo 旋轉角度</span>
+    delay(<span class="dv">15</span>);                           <span class="co">// 等 Servo 旋轉</span>
+  } <span class="kw">else</span> {
+    <span class="co">// 右邊光敏電阻較亮&amp;#65292;控制 Servo 轉到 180 度</span>
+    myservo.write(<span class="dv">180</span>);                  <span class="co">// 設定 Servo 旋轉角度</span>
+    delay(<span class="dv">15</span>);                           <span class="co">// 等待 Servo 旋轉</span>
+  }
+
+  <span class="co">// 印出左右兩顆光敏電阻的讀值</span>
+  Serial.print(<span class="st">&quot;left: &quot;</span>); Serial.print(readingLeft);
+  Serial.print(<span class="st">&quot; right: &quot;</span>); Serial.println(readingRight);  
+} </code></pre>
+<p>編譯這支程式，然後上傳到 Arduino，接著打開 Serial Monitor 就可以看到左右兩顆光敏電阻數值的變化：</p>
+<div class="figure">
+<img src="../img/arduinoServoCom.png" />
+</div>
+<p>底下是示範影片：</p>
+<ul>
+<li><a href="http://youtu.be/ryYl9DeqD5w">http://youtu.be/ryYl9DeqD5w</a></li>
+</ul>
+<p>版本二(PhotocellServoV2.pde): 這個版本增加一個功能，當左右兩邊光敏電阻光線相差不多時，就控制伺服馬達讓它旋轉到 90 度。</p>
+<pre class="sourceCode CPP"><code class="sourceCode cpp"><span class="co">// 使用光敏電阻控制 Servo, Version 2</span>
+
+<span class="co">// 引用 Servo Library</span>
+<span class="ot">#include &lt;Servo.h&gt; </span>
+
+<span class="co">// 建立一個 Servo 物件 </span>
+Servo myservo; 
+ 
+<span class="co">// 兩顆光敏電阻接在 Analog pin 0 及 pin 1</span>
+<span class="dt">int</span> sensorLeft = <span class="dv">0</span>;
+<span class="dt">int</span> sensorRight = <span class="dv">1</span>;
+ 
+<span class="dt">void</span> setup() 
+{ 
+  Serial.begin(<span class="dv">9600</span>);
+  myservo.attach(<span class="dv">9</span>);  <span class="co">// Servo 接在 pin 9</span>
+} 
+ 
+<span class="dt">void</span> loop() 
+{
+  <span class="dt">int</span> readingLeft, readingRight, difference;
+  
+  <span class="co">// 讀取左右兩顆光敏電阻的讀值</span>
+  readingLeft = analogRead(sensorLeft);
+  readingRight = analogRead(sensorRight);
+
+  <span class="co">// 計算差值</span>
+  difference = abs(readingLeft - readingRight);
+
+  <span class="co">// 假如左右兩邊光敏電阻差值不大&amp;#65292;就控制 Servo 轉到 90 度</span>
+  <span class="kw">if</span> (difference &lt;= <span class="dv">100</span>) {
+    myservo.write(<span class="dv">90</span>);
+    delay(<span class="dv">15</span>);  
+  } <span class="kw">else</span> <span class="kw">if</span> (readingLeft &gt; readingRight) {
+    <span class="co">// 左邊光敏電阻較亮&amp;#65292;控制 Servo 轉到 0 度</span>
+    myservo.write(<span class="dv">0</span>);                    <span class="co">// 設定 Servo 旋轉角度</span>
+    delay(<span class="dv">15</span>);                           <span class="co">// 等 Servo 旋轉</span>
+  } <span class="kw">else</span> {
+    <span class="co">// 右邊光敏電阻較亮&amp;#65292;控制 Servo 轉到 180 度    </span>
+    myservo.write(<span class="dv">180</span>);                  <span class="co">// 設定 Servo 旋轉角度</span>
+    delay(<span class="dv">15</span>);                           <span class="co">// 等待 Servo 旋轉</span>
+  }
+
+  <span class="co">// 印出左右兩顆光敏電阻的讀值</span>
+  Serial.print(<span class="st">&quot;left: &quot;</span>); Serial.print(readingLeft);
+  Serial.print(<span class="st">&quot; right: &quot;</span>); Serial.println(readingRight);  
+} </code></pre>
+<h3 id="動動腦"><a href="#動動腦">動動腦</a></h3>
+<p>光敏電阻加上伺服馬達，像這樣的組合可以應用在哪些地方呢?</p>
+<h3 id="延伸閱讀"><a href="#延伸閱讀">延伸閱讀</a></h3>
+<ul>
+<li><a href="http://coopermaa2nd.blogspot.com/2010/12/arduino-lab8-led.html">Lab8 使用光敏電阻控制 LED 的開關</a></li>
+<li><a href="http://coopermaa2nd.blogspot.com/2011/01/arduino-lab16.html">Lab16 使用可變電阻控制伺服馬達</a></li>
+</ul>
+<p>【本文作者為馬萬圳，原文網址為： <a href="http://coopermaa2nd.blogspot.tw/2011/01/arduino-lab17-servo.html">http://coopermaa2nd.blogspot.tw/2011/01/arduino-lab17-servo.html</a> ，由陳鍾誠編輯後納入本雜誌】</p>
+</div>
+<div id="footer">
+<a href="https://www.facebook.com/groups/programmerMagazine/">程式人雜誌</a> ，採用 <a href="http://creativecommons.org/licenses/by-sa/3.0/tw/ ">創作共用：姓名標示、相同方式分享</a> 授權，歡迎加入 <a href="https://www.facebook.com/groups/programmerMagazine/">雜誌社團</a>
+</div>
+</body>
+</html>

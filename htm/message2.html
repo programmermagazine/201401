@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" href="../css/pmag.css" type="text/css" />
+</head>
+<body>
+<div id="header_wrap">
+   <h1><a href="https://www.facebook.com/groups/programmerMagazine">程式人雜誌</a> <sub> --  <a href="https://dl.dropbox.com/u/101584453/pmag/201312/htm/home.html">2014 年 1 月號</a> (開放公益出版品)</sub></h1>
+</div>
+<div id="content">
+<div id="TOC">
+<ul>
+<li><a href="#金融短訊sha-安全雜湊算法">金融短訊：SHA 安全雜湊算法</a></li>
+</ul>
+</div>
+<h2 id="金融短訊sha-安全雜湊算法"><a href="#金融短訊sha-安全雜湊算法">金融短訊：SHA 安全雜湊算法</a></h2>
+<p>由於上文介紹「比特幣」時發現「安全雜湊算法家族 SHA」 是該系統的一個關鍵演算法，目前的比特幣採用 SHA-2 (SHA-224、SHA-256、SHA-384，和SHA-512 的統稱, 比特幣應該是採用 SHA-256) 的演算法，因此我們將在此介紹有關 SHA 算法家族的原理，以便能進一步理解「比特幣」的運作原理。</p>
+<h3 id="簡介"><a href="#簡介">簡介</a></h3>
+<p>安全雜湊演算法（英語：Secure Hash Algorithm）是一種能計算出一個數位訊息所對應到的，長度固定的字串（又稱訊息摘要）的演算法。且若輸入的訊息不同，它們對應到不同字串的機率很高；而SHA是FIPS所認證的五種安全雜湊演算法。這些演算法之所以稱作「安全」是基於以下兩點（根據官方標準的描述）：「1)由訊息摘要反推原輸入訊息，從計算理論上來說是很困難的。2)想要找到兩組不同的訊息對應到相同的訊息摘要，從計算理論上來說也是很困難的。任何對輸入訊息的變動，都有很高的機率導致其產生的訊息摘要迥異。」</p>
+<p>SHA家族的五個演算法，分別是SHA-1、SHA-224、SHA-256、SHA-384，和SHA-512，由美國國家安全域（NSA）所設計，並由美國國家標準與技術研究院（NIST）發佈；是美國的政府標準。後四者有時並稱為SHA-2。SHA-1在許多安全協定中廣為使用，包括TLS和SSL、PGP、SSH、S/MIME和IPsec，曾被視為是MD5（更早之前被廣為使用的雜湊函式）的後繼者。但SHA-1的安全性如今被密碼學家嚴重質疑；雖然至今尚未出現對SHA-2有效的攻擊，它的演算法跟SHA-1基本上仍然相似；因此有些人開始發展其他替代的雜湊演算法。緣於最近對SHA-1的種種攻擊發表，「美國國家標準與技術研究院（NIST）開始設法經由公開競爭管道（類似高級加密標準AES的發展經過），發展一個或多個新的雜湊演算法。」</p>
+<p>2012年10月2號，Keccak被選為NIST雜湊函式競賽的勝利者,成為SHA-3。 SHA-3並不是要取代SHA-2，因為SHA-2目前並沒有出現明顯的弱點。由於對MD5出現成功的破解，以及對SHA-0和SHA-1出現理論上破解的方法，NIST感覺需要一個與之前演算法不同的，可替換的加密雜湊演算法，也就是現在的SHA-3。設計者宣稱在Intel Core 2的CPU上面，此演算法的效能是12.5cpb（每位元組周期數，cycles per byte）。不過，在硬體實做上面，這個演算法比起其他演算法明顯的快上很多。</p>
+<p>SHA-0 和 SHA-1可將一個最大 2 的 64 次方位元的訊息，轉換成一串160位元的訊息摘要；其設計原理相似於MIT教授Ronald L. Rivest所設計的密碼學雜湊演算法 MD4 和 MD5。</p>
+<p>安全雜湊算法 SHA 家族的「輸入、輸出、迴圈次數、與目前的安全性」等特性，可參考以下列表。</p>
+<div class="figure">
+<img src="../img/SHATable.jpg" alt="圖、雜湊算法 SHA 家族的特性表" /><p class="caption">圖、雜湊算法 SHA 家族的特性表</p>
+</div>
+<h3 id="sha-1-的演算法"><a href="#sha-1-的演算法">SHA-1 的演算法</a></h3>
+<p>以下是 SHA-1 演算法其中一個步驟的示意圖：</p>
+<div class="figure">
+<img src="../img/SHA1.jpg" alt="圖、SHA-1 演算法的一個步驟" /><p class="caption">圖、SHA-1 演算法的一個步驟</p>
+</div>
+<p>完整的 SHA-1 演算法如下所示：</p>
+<pre class="sourceCode CPP"><code class="sourceCode cpp"><span class="co">// Note: All variables are unsigned 32 bits and wrap modulo 2^32 when calculating</span>
+<span class="co">// 注意：所有變數都是 32 位元的無號整數，而且計算時都會對 2^32 取餘數。</span>
+
+<span class="co">// Initialize variables: 初始化下列變數</span>
+h0 := <span class="bn">0x67452301</span>
+h1 := <span class="bn">0xEFCDAB89</span>
+h2 := <span class="bn">0x98BADCFE</span>
+h3 := <span class="bn">0x10325476</span>
+h4 := <span class="bn">0xC3D2E1F0</span>
+
+<span class="co">// Pre-processing: 前處理階段</span>
+append the bit &#39;<span class="dv">1</span>&#39; to the message (對訊息補上一個 <span class="dv">1</span>)
+append k bits &#39;<span class="dv">0</span>&#39;, where k is the minimum number &gt;= <span class="dv">0</span> such that the resulting message
+    length (in bits) is congruent to <span class="dv">448</span>(mod <span class="dv">512</span>)  (若訊息長度未達 <span class="dv">448</span> mod <span class="dv">512</span>，則補一堆 <span class="dv">0</span>)
+append length of message (before pre-processing), in bits, as <span class="dv">64</span>-bit big-endian integer (
+
+<span class="co">// Process the message in successive 512-bit chunks:</span>
+<span class="kw">break</span> message into <span class="dv">512</span>-bit chunks
+<span class="kw">for</span> each chunk
+    <span class="kw">break</span> chunk into sixteen <span class="dv">32</span>-bit big-endian words w[i], <span class="dv">0</span> ≤ i ≤ <span class="dv">15</span>
+
+<span class="co">//  Extend the sixteen 32-bit words into eighty 32-bit words:</span>
+    <span class="kw">for</span> i from <span class="dv">16</span> to <span class="dv">79</span>
+        w[i] := (w[i<span class="dv">-3</span>] <span class="kw">xor</span> w[i<span class="dv">-8</span>] <span class="kw">xor</span> w[i<span class="dv">-14</span>] <span class="kw">xor</span> w[i<span class="dv">-16</span>]) leftrotate <span class="dv">1</span>
+    
+<span class="co">//  Initialize hash value for this chunk:</span>
+    a := h0
+    b := h1
+    c := h2
+    d := h3
+    e := h4
+    
+<span class="co">//  Main loop:</span>
+    <span class="kw">for</span> i from <span class="dv">0</span> to <span class="dv">79</span>
+        <span class="kw">if</span> <span class="dv">0</span> ≤ i ≤ <span class="dv">19</span> then
+            f := (b <span class="kw">and</span> c) <span class="kw">or</span> ((<span class="kw">not</span> b) <span class="kw">and</span> d)
+            k := <span class="bn">0x5A827999</span>
+        <span class="kw">else</span> <span class="kw">if</span> <span class="dv">20</span> ≤ i ≤ <span class="dv">39</span>
+            f := b <span class="kw">xor</span> c <span class="kw">xor</span> d
+            k := <span class="bn">0x6ED9EBA1</span>
+        <span class="kw">else</span> <span class="kw">if</span> <span class="dv">40</span> ≤ i ≤ <span class="dv">59</span>
+            f := (b <span class="kw">and</span> c) <span class="kw">or</span> (b <span class="kw">and</span> d) <span class="kw">or</span>(c <span class="kw">and</span> d)
+            k := <span class="bn">0x8F1BBCDC</span>
+        <span class="kw">else</span> <span class="kw">if</span> <span class="dv">60</span> ≤ i ≤ <span class="dv">79</span>
+            f := b <span class="kw">xor</span> c <span class="kw">xor</span> d
+            k := <span class="bn">0xCA62C1D6</span>
+        temp := (a leftrotate <span class="dv">5</span>) + f + e + k + w[i]
+        e := d
+        d := c
+        c := b leftrotate <span class="dv">30</span>
+        b := a
+        a := temp
+
+<span class="co">//  Add this chunk&#39;s hash to result so far:</span>
+    h0 := h0 + a
+    h1 := h1 + b
+    h2 := h2 + c
+    h3 := h3 + d
+    h4 := h4 + e
+    
+<span class="co">// Produce the final hash value (big-endian):</span>
+digest = hash = h0 append h1 append h2 append h3 append h4</code></pre>
+<h3 id="sha-1-的編碼範例"><a href="#sha-1-的編碼範例">SHA-1 的編碼範例</a></h3>
+<p>以下幾個範例顯示了 SHA-1 的用法：</p>
+<p>範例一：SHA-1 的編碼範例</p>
+<pre><code>SHA1(&quot;The quick brown fox jumps over the lazy dog&quot;)
+16進位：2fd4e1c6 7a2d28fc ed849ee1 bb76e739 1b93eb12
+Base64：L9ThxnotKPzthJ7hu3bnORuT6xI=</code></pre>
+<p>範例二：範例一中的 dog 改為 cog 之後，SHA-1 的編碼結果就完全不同了。(而這也正式難以破解的原因，無跡可尋啊!)</p>
+<pre><code>SHA1(&quot;The quick brown fox jumps over the lazy cog&quot;)
+16進位：de9f2c7f d25e1b3a fad3e85a 0bd17d9b 100db4b3
+Base64：3p8sf9JeGzr60+haC9F9mxANtLM=</code></pre>
+<p>範例三：空字串的 SHA-1 編碼結果</p>
+<pre><code>SHA1(&quot;&quot;)
+16進位：da39a3ee 5e6b4b0d 3255bfef 95601890 afd80709
+Base64：2jmj7l5rSw0yVb/vlWAYkK/YBwk=</code></pre>
+<p>如果您對「如何用 SHA-1 實作雜湊現金技術」有興趣，可以參考筆者的另一篇文章，連結如下：</p>
+<ul>
+<li><a href="http://www.codedata.com.tw/social-coding/hashcash/">比特幣挖礦的背後 -- SHA 與雜湊現金</a></li>
+</ul>
+<h3 id="結語"><a href="#結語">結語</a></h3>
+<p>雖然 SHA-1 已經在各種資訊安全協定中廣被採用，但還是有些弱點，這也是為何要開發 SHA-2 與 SHA-3 的原因。</p>
+<p>2005年，Rijmen 和 Oswald 發表了對 SHA-1 較弱版本（53次的加密迴圈而非80次）的攻擊：在 <img src="../timg/258c4fa3e578.jpg" /> 的計算複雜度之內找到碰撞。</p>
+<p>2005年二月，王小雲、殷益群及於紅波發表了對完整版SHA-1的攻擊，只需少於 <img src="../timg/475e66f874b7.jpg" /> 的計算複雜度，就能找到一組碰撞。</p>
+<p>2005年8月17日的 CRYPTO 會議尾聲中王小雲、姚期智、姚儲楓再度發表更有效率的SHA-1攻擊法，能在 <img src="../timg/9ede835b8e3d.jpg" /> 個計算複雜度內找到碰撞。</p>
+<p>2006年的 CRYPTO 會議上，Christian Rechberger和Christophe DeCannière 宣布他們能在容許攻擊者決定部分原訊息的條件之下，找到SHA-1的一個碰撞。</p>
+<p>不過這些攻擊法其實還是需要 <img src="../timg/e54067823a2e.jpg" /> 以上的複雜度，而比特幣所採用的 SHA-2 到目前為止還沒有被較快速破解成功的案例， 但是還是有人認為 SHA-2 其實並不夠安全，像是以下文章就有這方面的質疑。</p>
+<ul>
+<li><a href="http://www.bitecoin.com/online/2013/09/2398.html">比特幣安全基礎毀滅？ SHA-2驚現重大安全疑團</a></li>
+</ul>
+<p>隨著技術進步，加密法似乎總是必須更新以防止破解的，不過類似比特幣這樣的系統，是相當有啟發性且創新的一種做法， 資訊領域的技術進入金融世界之後，或許還能摩擦出更多的火花也說不定。</p>
+<h3 id="參考文獻"><a href="#參考文獻">參考文獻</a></h3>
+<ul>
+<li>維基百科：<a href="http://zh.wikipedia.org/wiki/SHA%E5%AE%B6%E6%97%8F">SHA家族</a></li>
+<li>Wikipedia:<a href="http://en.wikipedia.org/wiki/SHA-1">SHA-1</a></li>
+<li><a href="http://www.ietf.org/rfc/rfc3174.txt">rfc3174: US Secure Hash Algorithm 1 (SHA1)</a></li>
+<li><a href="http://www.mis.csu.edu.tw/tsnien/teach_manu/f8745/f8745_html/">資訊與網路安全技術</a></li>
+<li><a href="http://www.mis.csu.edu.tw/tsnien/teach_manu/f8745/f8745_html/chap5/chap5-8.htm">5-8 SHA-1 (Secure Hash Algorithm) 演算法</a></li>
+<li><a href="http://www.mis.csu.edu.tw/tsnien/teach_manu/f8745/f8745_html/chap5/chap5-6.htm">5-6 MD5 壓縮函數</a></li>
+</ul>
+<p>【本文由陳鍾誠取材並修改自 <a href="http://zh.wikipedia.org/">維基百科</a>，採用創作共用的 <a href="http://creativecommons.org/licenses/by-sa/3.0/tw/">姓名標示、相同方式分享</a> 授權】</p>
+</div>
+<div id="footer">
+<a href="https://www.facebook.com/groups/programmerMagazine/">程式人雜誌</a> ，採用 <a href="http://creativecommons.org/licenses/by-sa/3.0/tw/ ">創作共用：姓名標示、相同方式分享</a> 授權，歡迎加入 <a href="https://www.facebook.com/groups/programmerMagazine/">雜誌社團</a>
+</div>
+</body>
+</html>
